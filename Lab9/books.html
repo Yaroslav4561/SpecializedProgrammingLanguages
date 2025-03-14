@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список книг</title>
+    <script>
+        async function loadBooks() {
+            let response = await fetch('/books');
+            let books = await response.json();
+            let bookList = document.getElementById('book-list');
+            bookList.innerHTML = '';
+            books.forEach(book => {
+                let li = document.createElement('li');
+                li.innerHTML = `${book.title} (${book.year}) - ${book.author}
+                    <button onclick="deleteBook(${book.id})">Видалити</button>`;
+                bookList.appendChild(li);
+            });
+        }
+
+        async function deleteBook(id) {
+            await fetch(`/books/${id}`, { method: 'DELETE' });
+            loadBooks();
+        }
+
+        window.onload = loadBooks;
+    </script>
+</head>
+<body>
+    <h1>Список книг</h1>
+    <ul id="book-list"></ul>
+    <a href="/book_form">Додати нову книгу</a>
+</body>
+</html>

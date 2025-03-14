@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати книгу</title>
+    <script>
+        async function addBook(event) {
+            event.preventDefault();
+            let title = document.getElementById('title').value;
+            let author = document.getElementById('author').value;
+            let year = document.getElementById('year').value;
+
+            let response = await fetch('/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, author, year })
+            });
+
+            if (response.ok) {
+                window.location.href = '/books';
+            } else {
+                alert('Помилка додавання книги');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Додати нову книгу</h1>
+    <form onsubmit="addBook(event)">
+        <label>Назва:</label><br>
+        <input type="text" id="title" required><br>
+
+        <label>Автор:</label><br>
+        <input type="text" id="author" required><br>
+
+        <label>Рік видання:</label><br>
+        <input type="number" id="year" required><br>
+
+        <button type="submit">Додати</button>
+    </form>
+    <a href="/books">Назад до списку</a>
+</body>
+</html>
